@@ -20,12 +20,22 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """returns a dictionary
+    def all(self, cls=None):
+        """returns a dictionary according to cls
+        Args:
+            cls: Class of objects to return
         Return:
-            returns a dictionary of __object
+            returns a dictionary of __objects filtered by cls
+            If not cls given, return __objects
         """
-        return self.__objects
+        if cls:
+            cls_objects = {}
+            for key in self.__objects.keys():
+                if cls in key:
+                    cls_objects.append(self.__objects.keys())
+            return cls_objects
+        else:
+            return self.__objects
 
     def new(self, obj):
         """sets __object to given obj
