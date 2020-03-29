@@ -31,8 +31,8 @@ class FileStorage:
         if cls:
             cls_objects = {}
             for key in self.__objects.keys():
-                if cls in key:
-                    cls_objects.append(self.__objects.keys())
+                if cls.__name__ in key:
+                    cls_objects[key] = self.__objects[key]
             return cls_objects
         else:
             return self.__objects
