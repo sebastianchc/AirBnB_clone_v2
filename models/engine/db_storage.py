@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the DBStorage class for AirBnB"""
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from os import environ
 from models.base_model import Base
 from models.user import User
@@ -49,14 +49,14 @@ class DBStorage:
                 objects = session.query(obj_cls).all()
                 for obj in objects:
                     key = "{}.{}".format(type(obj).__name__, obj.id)
-                    obj_dict[key] = obj
+                    ob_dict[key] = obj
         else:
-            obj_cls = eval(cls)
+            # obj_cls = eval(cls)
             objects = session.query(obj_cls).all()
             for obj in objects:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
-                obj_dict[key] = obj
-        return obj_dict
+                ob_dict[key] = obj
+        return ob_dict
 
     def new(self, obj):
         """new method
