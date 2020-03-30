@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This is the user class"""
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel#, Base
 from sqlalchemy import Column, String
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """This is the class for user
     Attributes:
         __tablename__: represents the table users
