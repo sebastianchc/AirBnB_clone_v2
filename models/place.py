@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """This is the place class"""
-from models import storage
+import models
+from os import environ
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float
-
+from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -34,10 +35,15 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-    reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
-
-     @property
-     def reviews(self):
-         """Getter property for FileStorage"""
-         for rev in storage.all(Review):
-             if rev.place_id == self.id:
+    if environ.get("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+    else:
+        @property
+        def reviews(self):
+            """Getter property for FileStorage
+            """
+            rev_list = []
+            for key, obj in models.storage.all(Review).items():
+                if self.id in key:
+                    rev_list.append(obj)
+            return rev_list
