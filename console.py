@@ -44,10 +44,15 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             for attributes in range(1, len(my_list)):
-                command = my_list[i]
+                command = my_list[attributes]
                 command = command.replace("=", " ")
                 att_val = command.split()
                 att_val[1] = att_val[1].replace("_", " ")
+                try:
+                    value = eval(att_val[1])
+                    att_val[1] = value
+                except:
+                    pass
                 setattr(obj, att_val[0], att_val[1])
             obj.save()
             print("{}".format(obj.id))
