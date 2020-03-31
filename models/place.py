@@ -69,9 +69,13 @@ class Place(BaseModel, Base):
         list_amenities = []
         place_amenities = models.engine.all(Amenity)
         for pl_amenity in place_amenities.values():
-            if place_amenity.amenity_id == pl_amenity.id:
+            if pl_amenity.place_id == self.id:
                 list_amenities.append(pl_amenity)
         return list_amenities
 
     @amenities.setter
-    def amenities(self)
+    def amenities(self, obj):
+        """Setter properti Amenity FileStorage
+        """
+        if is isinstance(obj, Amenity):
+            self.ameninities.append(obj.id)
