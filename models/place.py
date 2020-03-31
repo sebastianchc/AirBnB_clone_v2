@@ -12,10 +12,10 @@ place_amenity = Table("place_amenity", Base.metadata,
                              String(60),
                              ForeignKey("places.id"),
                              primary_key=True,
-                             nullable=False)
+                             nullable=False),
                       Column("amenity_id",
                              String(60),
-                             ForeignKey=True,
+                             ForeignKey("amenities.id"),
                              primary_key=True,
                              nullable=False))
 
@@ -77,5 +77,5 @@ class Place(BaseModel, Base):
     def amenities(self, obj):
         """Setter properti Amenity FileStorage
         """
-        if is isinstance(obj, Amenity):
+        if isinstance(obj, Amenity):
             self.ameninities.append(obj.id)
