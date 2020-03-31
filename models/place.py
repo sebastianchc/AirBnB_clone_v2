@@ -1,11 +1,23 @@
 #!/usr/bin/python3
 """This is the place class"""
 import models
-from models.review import Review
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float
+from sqlalchemy import ForeignKey, MetaData, Table
 from sqlalchemy.orm import relationship
 
+
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id",
+                             String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False)
+                      Column("amenity_id",
+                             String(60),
+                             ForeignKey=True,
+                             primary_key=True,
+                             nullable=False))
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -35,6 +47,9 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="all, delete")
+    amenities = relationship("Amenity",
+                             secondary="place_amenity",
+                             viewonly=False)
 
     @property
     def reviews(self):
@@ -46,3 +61,17 @@ class Place(BaseModel, Base):
             if pl_review.place_id == self.id:
                 list_reviews.append(pl_review)
         return list_reviews
+
+    @property
+    def amenities(self):
+        """Getter property for FileStorage
+        """
+        list_amenities = []
+        place_amenities = models.engine.all(Amenity)
+        for pl_amenity in place_amenities.values():
+            if place_amenity.amenity_id == pl_amenity.id:
+                list_amenities.append(pl_amenity)
+        return list_amenities
+
+    @amenities.setter
+    def amenities(self)
