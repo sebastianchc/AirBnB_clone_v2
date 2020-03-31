@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the place class"""
 import models
+from os import environ
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float
 from sqlalchemy import ForeignKey, MetaData, Table
@@ -12,10 +13,10 @@ place_amenity = Table("place_amenity", Base.metadata,
                              String(60),
                              ForeignKey("places.id"),
                              primary_key=True,
-                             nullable=False)
+                             nullable=False),
                       Column("amenity_id",
                              String(60),
-                             ForeignKey=True,
+                             ForeignKey("amenities.id"),
                              primary_key=True,
                              nullable=False))
 
@@ -46,36 +47,40 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", backref="place", cascade="all, delete")
-    amenities = relationship("Amenity",
-                             secondary="place_amenity",
-                             viewonly=False)
+    amenity_ids = []
 
-    @property
-    def reviews(self):
-        """Getter property for FileStorage
-        """
-        list_reviews = []
-        place_reviews = models.engine.all(Review)
-        for pl_review in place_reviews.values():
-            if pl_review.place_id == self.id:
-                list_reviews.append(pl_review)
-        return list_reviews
+    if environ.get('HBNB_TYPE_STORAGE') == "db":
+        reviews = relationship("Review", backref="place", cascade="all, delete")
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 viewonly=False)
+    else:
+        @property
+        def reviews(self):
+            """Getter property for FileStorage
+            """
+            list_reviews = []
+            place_reviews = models.storage.all(Review)
+            for pl_review in place_reviews.values():
+                if pl_review.place_id == self.id:
+                    list_reviews.append(pl_review)
+            return list_reviews
 
-    @property
-    def amenities(self):
-        """Getter property for FileStorage
-        """
-        list_amenities = []
-        place_amenities = models.engine.all(Amenity)
-        for pl_amenity in place_amenities.values():
-            if pl_amenity.place_id == self.id:
-                list_amenities.append(pl_amenity)
-        return list_amenities
+        @property
+        def amenities(self):
+            """amenities getter property for FileStorage
+            """
+            all_amenities = models.storage.all(models.Amenity)
+            place_amenities = []
+            for amenity_obj in all_amenities.values():
+                for a_id in amenity_ids:
+                    if a_id == amenity_obj.id:
+                        all_amenities.append(amenity_ins)
+            return place_amenities
 
-    @amenities.setter
-    def amenities(self, obj):
-        """Setter properti Amenity FileStorage
-        """
-        if is isinstance(obj, Amenity):
-            self.ameninities.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj):
+            """amenities setter property for FileStorage
+            """
+            if isinstance(obj, models.Amenity):
+                self.amenity_ids.append(obj.id)
