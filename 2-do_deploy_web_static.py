@@ -31,7 +31,9 @@ def do_deploy(archive_path):
         uncompress = "tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
         run(uncompress.format(path_file, file_name))
         run("rm /tmp/{}".format(path_file))
-        move = "mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/"
+        move1 = "mv /data/web_static/releases/{}/web_static/*"
+        move2 = "/data/web_static/releases/{}/"
+        move = "{} {}".format(move1, move2)
         run(move.format(file_name, file_name))
         run("rm -fr /data/web_static/current")
         s_link = "ln -s /data/web_static/releases/{} /data/web_static/current"
