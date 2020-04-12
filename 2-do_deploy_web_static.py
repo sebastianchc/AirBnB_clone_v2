@@ -6,6 +6,7 @@ from os import path
 
 env.hosts = ["35.237.254.152", "35.196.237.181"]
 
+
 def do_pack():
     try:
         local("mkdir -p versions")
@@ -15,6 +16,7 @@ def do_pack():
         return "web_static_{}".format(path)
     except:
         return None
+
 
 def do_deploy(archive_path):
     if not path.isfile(archive_path):
