@@ -14,7 +14,7 @@ def do_pack():
         date = datetime.now()
         path = date.strftime("%Y%m%d%H%M%S")
         local("tar -cvzf versions/web_static_{}.tgz web_static".format(path))
-        return "web_static_{}".format(path)
+        return "versions/web_static_{}.tgz".format(path)
     except:
         return None
 
@@ -42,13 +42,14 @@ def do_deploy(archive_path):
         s_link = "ln -s /data/web_static/releases/{} /data/web_static/current"
         run(s_link.format(file_name))
         return True
-    except Exception as error:
-        print(error)
+    except:
         return False
 
 
 def deploy():
-    archive_path = do_pack()
-    if not archive_path:
+    qwertyuio = do_pack()
+
+    if not qwertyuio:
         return False
-    return do_deploy(archive_path)
+    status = do_deploy(qwertyuio)
+    return status
