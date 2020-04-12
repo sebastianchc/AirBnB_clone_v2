@@ -8,14 +8,6 @@ env.hosts = ["35.237.254.152", "35.196.237.181"]
 env.user = "ubuntu"
 
 
-def deploy():
-    try:
-        archive_path = do_pack()
-    except:
-        return False
-    return do_deploy(archive_path)
-
-
 def do_pack():
     try:
         local("mkdir -p versions")
@@ -53,3 +45,10 @@ def do_deploy(archive_path):
     except Exception as error:
         print(error)
         return False
+
+
+def deploy():
+    archive_path = do_pack()
+    if not archive_path:
+        return False
+    return do_deploy(archive_path)
