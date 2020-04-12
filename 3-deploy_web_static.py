@@ -5,14 +5,15 @@ from os import path
 
 
 env.hosts = ["35.237.254.152", "35.196.237.181"]
+env.user = "ubuntu"
 
 
 def deploy():
     try:
-        compress_f = do_pack()
+        archive_path = do_pack()
     except:
         return False
-    return do_deploy(compress_f)
+    return do_deploy(archive_path)
 
 
 def do_pack():
