@@ -35,7 +35,7 @@ exec { 'Permissions' :
 
 exec { 'Location' :
      require: => Exec['Permissions'],
-     command => '/bin/sed -i "49i location /hbnb_static {\n\t\talias /data/web_static/current;\n\t}" /etc/nginx/sites-enabled/default'
+     command => '/bin/sed -i "38i location /hbnb_static {\n\t\talias /data/web_static/current;\n\t}" /etc/nginx/sites-enabled/default'
 }
 
 exec { 'Restart' :
