@@ -12,8 +12,8 @@ def close_session(error):
 
 @app.route("/states_list", strict_slashes=False)
 def states_list():
-    list_states =[]
-    states = models.storage.all(State)
+    list_states = []
+    states = storage.all(State)
     for state in states.values():
         list_states.append(state)
     return render_template("7-states_list.html", states=list_states)
