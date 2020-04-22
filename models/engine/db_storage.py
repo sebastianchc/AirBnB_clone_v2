@@ -44,7 +44,6 @@ class DBStorage:
         ob_dict = {}
         session = self.__session
         if not cls:
-            #clases = [User, State, City, Amenity, Place, Review]
             clases = [User, State, City, Amenity, Place, Review]
             for obj_cls in clases:
                 objects = session.query(obj_cls).all()
@@ -78,9 +77,8 @@ class DBStorage:
         """reload method
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,
-                                      expire_on_commit=False)
-        Session = scoped_session(session_factory)
+        sess_fact = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess_fact)
         self.__session = Session()
 
     def close(self):
