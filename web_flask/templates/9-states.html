@@ -11,7 +11,7 @@
       <LI>{{state["id"]}}: <B>{{state["name"]}}</B>
       {% endfor %}
     </UL>
-    {% elif id == "-1" %}
+    {% elif id in states %}
     <H1>Not found!</H1>
     {% else %}
     {% for state in states|sort(attribute="name") -%}
