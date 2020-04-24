@@ -11,20 +11,16 @@
       <LI>{{state["id"]}}: <B>{{state["name"]}}</B>
       {% endfor %}
     </UL>
-    {% elif id in states %}
+    {% elif id == -1 %}
     <H1>Not found!</H1>
     {% else %}
-    {% for state in states|sort(attribute="name") -%}
-    {% if state["id"] == id -%}
-    <H1>State: {{state["name"]}}</H1>
+    <H1>State: {{id["name"]}}</H1>
     <H3>Cities:</H3>
     <UL>
-      {% for city in state.cities|sort(attribute="name") %}
+      {% for city in states|sort(attribute="name") %}
       <LI>{{city["id"]}}: <B>{{city["name"]}}</B></LI>
       {% endfor %}
     </UL>
-    {%- endif %}
-    {%- endfor %}
     {% endif %}
   </BODY>
 </HTML>
