@@ -14,7 +14,7 @@ def close_session(error):
 @app.route("/states/<id>", strict_slashes=False)
 def states(id=None):
     states = storage.all(State).values()
-    if id == None:
+    if id is None:
         return render_template("9-states.html", states=states, id=id)
     for state in states:
         if state.id == id:
